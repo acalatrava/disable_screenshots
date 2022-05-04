@@ -144,13 +144,13 @@ public class ScreenShotListenManager {
         mContext.getContentResolver().registerContentObserver(
                 MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
                 true,
-                contentObserver
+                mExternalObserver
         );
         
         mContext.getContentResolver().registerContentObserver(
                 MediaStore.Images.Media.INTERNAL_CONTENT_URI,
                 true,
-                contentObserver
+                mInternalObserver
         );
         /*
 
