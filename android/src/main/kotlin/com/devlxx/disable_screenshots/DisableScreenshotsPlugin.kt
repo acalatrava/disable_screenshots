@@ -17,7 +17,9 @@ import io.flutter.plugin.common.MethodChannel.MethodCallHandler
 import io.flutter.plugin.common.MethodChannel.Result
 import io.flutter.plugin.common.PluginRegistry.Registrar
 import kotlin.coroutines.coroutineContext
-import kotlinx.coroutines.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 /** DisableScreenshotsPlugin */
 public class DisableScreenshotsPlugin: FlutterPlugin, MethodCallHandler, EventChannel.StreamHandler, ActivityAware {
@@ -94,7 +96,7 @@ public class DisableScreenshotsPlugin: FlutterPlugin, MethodCallHandler, EventCh
     screenShotListenManager = ScreenShotListenManager.newInstance(applicationContext)
     screenShotListenManager.setListener { imagePath ->
       println("screenshot recibido：$imagePath")
-      launch(Dispatchers.Main) {
+      GlobalScope.launch(Dispatchers.Main) {
         eventSink?.success("screenshot")
       }
     }
