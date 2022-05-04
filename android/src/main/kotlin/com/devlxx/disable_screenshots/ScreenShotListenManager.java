@@ -211,7 +211,7 @@ public class ScreenShotListenManager {
                         contentUri,
                         Build.VERSION.SDK_INT < 16 ? MEDIA_PROJECTIONS : MEDIA_PROJECTIONS_API_16,
                         queryArgs,
-                        null,
+                        null
                 );
             } else {
                 cursor = mContext.getContentResolver().query(
@@ -220,6 +220,7 @@ public class ScreenShotListenManager {
                         null,
                         null,
                         MediaStore.Images.ImageColumns.DATE_ADDED + " desc limit 1"
+                );
             }
 
             if (cursor == null) {
