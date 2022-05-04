@@ -76,13 +76,6 @@ public class ScreenShotListenManager {
      */
     private MediaContentObserver mExternalObserver;
 
-    /**
-     * 运行在 UI 线程的 Handler, 用于运行监听器回调
-     */
-    HandlerThread handlerThread = new HandlerThread("Screenshot_Observer");
-    handlerThread.start();
-    private final Handler mUiHandler = new Handler(handlerThread.getLooper());
-
     private ScreenShotListenManager(Context context) {
         if (context == null) {
             throw new IllegalArgumentException("The context must not be null.");
@@ -112,6 +105,13 @@ public class ScreenShotListenManager {
         assertInMainThread();
         
         Log.d(TAG, "startListen");
+        
+        /**
+         * 运行在 UI 线程的 Handler, 用于运行监听器回调
+         */
+        HandlerThread handlerThread = new HandlerThread("Screenshot_Observer");
+        handlerThread.start();
+        Handler mUiHandler = new Handler(handlerThread.getLooper());
 
 //        sHasCallbackPaths.clear();
 
