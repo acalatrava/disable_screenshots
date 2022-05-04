@@ -121,6 +121,22 @@ public class ScreenShotListenManager {
         // 创建内容观察者
         mInternalObserver = new MediaContentObserver(MediaStore.Images.Media.INTERNAL_CONTENT_URI, mUiHandler);
         mExternalObserver = new MediaContentObserver(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, mUiHandler);
+        
+        ContentObserver contentObserver = new ContentObserver(null) {
+            @Override
+            public void onChange(boolean selfChange, Uri uri) {
+                super.onChange(selfChange, uri);
+                Log.d(TAG, "selfChange");
+                
+            }
+        }
+        
+        mContext.getContentResolver().registerContentObserver(
+                MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+                true,
+                contentObserver
+        );
+        /*
 
         // 注册内容观察者
         mContext.getContentResolver().registerContentObserver(
@@ -133,6 +149,7 @@ public class ScreenShotListenManager {
                 false,
                 mExternalObserver
         );
+        */
     }
 
     /**
