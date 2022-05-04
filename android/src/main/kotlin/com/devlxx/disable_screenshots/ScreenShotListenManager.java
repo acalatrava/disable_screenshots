@@ -166,6 +166,7 @@ public class ScreenShotListenManager {
      * 处理媒体数据库的内容改变
      */
     private void handleMediaContentChange(Uri contentUri) {
+        Log.d(TAG, "handleMediaContentChange");
         Cursor cursor = null;
         try {
             // 数据改变时查询数据库中最后加入的一条数据
