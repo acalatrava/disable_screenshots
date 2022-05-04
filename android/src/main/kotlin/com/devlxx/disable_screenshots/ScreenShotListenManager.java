@@ -70,12 +70,12 @@ public class ScreenShotListenManager {
     /**
      * 内部存储器内容观察者
      */
-    private MediaContentObserver mInternalObserver;
+    private ContentObserver mInternalObserver;
 
     /**
      * 外部存储器内容观察者
      */
-    private MediaContentObserver mExternalObserver;
+    private ContentObserver mExternalObserver;
 
     private ScreenShotListenManager(Context context) {
         if (context == null) {
@@ -120,10 +120,19 @@ public class ScreenShotListenManager {
         mStartListenTime = System.currentTimeMillis();
 
         // 创建内容观察者
-        mInternalObserver = new MediaContentObserver(MediaStore.Images.Media.INTERNAL_CONTENT_URI, mUiHandler);
-        mExternalObserver = new MediaContentObserver(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, mUiHandler);
+        //mInternalObserver = new MediaContentObserver(MediaStore.Images.Media.INTERNAL_CONTENT_URI, mUiHandler);
+        //mExternalObserver = new MediaContentObserver(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, mUiHandler);
         
-        ContentObserver contentObserver = new ContentObserver(null) {
+        mInternalObserver = new ContentObserver(null) {
+            @Override
+            public void onChange(boolean selfChange, Uri uri) {
+                super.onChange(selfChange, uri);
+                Log.d(TAG, "selfChange");
+                handleMediaContentChange(uri);
+            }
+        };
+        
+        mExternalObserver = new ContentObserver(null) {
             @Override
             public void onChange(boolean selfChange, Uri uri) {
                 super.onChange(selfChange, uri);
