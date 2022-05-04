@@ -129,7 +129,7 @@ public class ScreenShotListenManager {
                 Log.d(TAG, "selfChange");
                 
             }
-        }
+        };
         
         mContext.getContentResolver().registerContentObserver(
                 MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
