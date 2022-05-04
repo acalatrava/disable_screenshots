@@ -127,12 +127,18 @@ public class ScreenShotListenManager {
             public void onChange(boolean selfChange, Uri uri) {
                 super.onChange(selfChange, uri);
                 Log.d(TAG, "selfChange");
-                
+                handleMediaContentChange(uri);
             }
         };
         
         mContext.getContentResolver().registerContentObserver(
                 MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+                true,
+                contentObserver
+        );
+        
+        mContext.getContentResolver().registerContentObserver(
+                MediaStore.Images.Media.INTERNAL_CONTENT_URI,
                 true,
                 contentObserver
         );
