@@ -198,16 +198,29 @@ public class ScreenShotListenManager {
         Log.d(TAG, "handleMediaContentChange");
         Cursor cursor = null;
         try {
-            // 数据改变时查询数据库中最后加入的一条数据
-            Bundle queryArgs = new Bundle();
-            queryArgs.putInt(mContext.getContentResolver().QUERY_ARG_LIMIT, 1);
-            cursor = mContext.getContentResolver().query(
-                    contentUri,
-                    Build.VERSION.SDK_INT < 16 ? MEDIA_PROJECTIONS : MEDIA_PROJECTIONS_API_16,
-                    queryArgs,
-                    null,
-                    MediaStore.Images.ImageColumns.DATE_ADDED
-            );
+            // 数据改变时查询数据库中最后加入的一条数据            
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                Bundle queryArgs = new Bundle();
+                queryArgs.putInt(mContext.getContentResolver().QUERY_ARG_LIMIT, 1);
+                queryArgs.putInt(mContext.getContentResolver().QUERY_ARG_OFFSET, 0);
+                String orderList[] = { MediaStore.Images.ImageColumns.DATE_ADDED };
+                queryArgs.putStringArray(mContext.getContentResolver().QUERY_ARG_SORT_COLUMNS, orderList);
+                queryArgs.putInt(mContext.getContentResolver().QUERY_ARG_SORT_DIRECTION, mContext.getContentResolver().QUERY_SORT_DIRECTION_DESCENDING);
+
+                cursor = mContext.getContentResolver().query(
+                        contentUri,
+                        Build.VERSION.SDK_INT < 16 ? MEDIA_PROJECTIONS : MEDIA_PROJECTIONS_API_16,
+                        queryArgs,
+                        null,
+                );
+            } else {
+                cursor = mContext.getContentResolver().query(
+                        contentUri,
+                        Build.VERSION.SDK_INT < 16 ? MEDIA_PROJECTIONS : MEDIA_PROJECTIONS_API_16,
+                        null,
+                        null,
+                        MediaStore.Images.ImageColumns.DATE_ADDED + " desc limit 1"
+            }
 
             if (cursor == null) {
                 Log.e(TAG, "Deviant logic.");
