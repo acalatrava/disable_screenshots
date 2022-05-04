@@ -198,12 +198,14 @@ public class ScreenShotListenManager {
         Cursor cursor = null;
         try {
             // 数据改变时查询数据库中最后加入的一条数据
+            Bundle queryArgs = new Bundle();
+            queryArgs.putInt(ContentResolver.QUERY_ARG_LIMIT, 1);
             cursor = mContext.getContentResolver().query(
                     contentUri,
                     Build.VERSION.SDK_INT < 16 ? MEDIA_PROJECTIONS : MEDIA_PROJECTIONS_API_16,
+                    queryArgs,
                     null,
-                    null,
-                    MediaStore.Images.ImageColumns.DATE_ADDED + " desc limit 1"
+                    MediaStore.Images.ImageColumns.DATE_ADDED
             );
 
             if (cursor == null) {
@@ -214,6 +216,8 @@ public class ScreenShotListenManager {
                 Log.d(TAG, "Cursor no data.");
                 return;
             }
+            
+            
 
             // 获取各列的索引
             int dataIndex = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
