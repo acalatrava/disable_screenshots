@@ -199,7 +199,7 @@ public class ScreenShotListenManager {
         try {
             // 数据改变时查询数据库中最后加入的一条数据
             Bundle queryArgs = new Bundle();
-            queryArgs.putInt(ContentResolver.QUERY_ARG_LIMIT, 1);
+            queryArgs.putInt(mContext.getContentResolver().QUERY_ARG_LIMIT, 1);
             cursor = mContext.getContentResolver().query(
                     contentUri,
                     Build.VERSION.SDK_INT < 16 ? MEDIA_PROJECTIONS : MEDIA_PROJECTIONS_API_16,
