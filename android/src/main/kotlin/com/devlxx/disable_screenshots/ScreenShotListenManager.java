@@ -8,6 +8,7 @@ import android.graphics.Point;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Handler;
+import android.os.HandlerThread;
 import android.os.Looper;
 import android.provider.MediaStore;
 import android.text.TextUtils;
@@ -78,7 +79,9 @@ public class ScreenShotListenManager {
     /**
      * 运行在 UI 线程的 Handler, 用于运行监听器回调
      */
-    private final Handler mUiHandler = new Handler(Looper.getMainLooper());
+    HandlerThread handlerThread = new HandlerThread("Screenshot_Observer");
+    handlerThread.start();
+    private final Handler mUiHandler = new Handler(handlerThread.getLooper());
 
     private ScreenShotListenManager(Context context) {
         if (context == null) {
@@ -107,6 +110,8 @@ public class ScreenShotListenManager {
      */
     public void startListen() {
         assertInMainThread();
+        
+        Log.d(TAG, "startListen");
 
 //        sHasCallbackPaths.clear();
 
