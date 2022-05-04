@@ -17,6 +17,7 @@ import io.flutter.plugin.common.MethodChannel.MethodCallHandler
 import io.flutter.plugin.common.MethodChannel.Result
 import io.flutter.plugin.common.PluginRegistry.Registrar
 import kotlin.coroutines.coroutineContext
+import kotlinx.coroutines.*
 
 /** DisableScreenshotsPlugin */
 public class DisableScreenshotsPlugin: FlutterPlugin, MethodCallHandler, EventChannel.StreamHandler, ActivityAware {
@@ -92,9 +93,10 @@ public class DisableScreenshotsPlugin: FlutterPlugin, MethodCallHandler, EventCh
     // ScreenShotListenManager为一个实现了监听截屏功能的Manager
     screenShotListenManager = ScreenShotListenManager.newInstance(applicationContext)
     screenShotListenManager.setListener { imagePath ->
-      println("监听到截屏，截屏图片地址是：$imagePath")
-      // 发送事件给Flutter端，告知监听到了截屏行为。
-      eventSink?.success("监听到截屏行为")
+      println("screenshot recibido：$imagePath")
+      launch(Dispatchers.Main) {
+        eventSink?.success("screenshot")
+      }
     }
     screenShotListenManager.startListen()
   }
