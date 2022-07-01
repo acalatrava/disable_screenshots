@@ -33,10 +33,6 @@ public class DisableScreenshotsPlugin: FlutterPlugin, MethodCallHandler, EventCh
   private var eventSink: EventChannel.EventSink? = null
   private lateinit var screenShotListenManager: ScreenShotListenManager;
   var disableScreenshots: Boolean = false
-  
-  constructor(activity: Activity?) : this() {
-    this.activity = activity
-  }
 
   override fun onAttachedToEngine(@NonNull flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
 
