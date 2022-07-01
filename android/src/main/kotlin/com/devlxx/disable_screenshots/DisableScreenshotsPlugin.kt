@@ -29,7 +29,7 @@ public class DisableScreenshotsPlugin: FlutterPlugin, MethodCallHandler, EventCh
   /// when the Flutter Engine is detached from the Activity
   private lateinit var channel : MethodChannel
   private lateinit var applicationContext: Context;
-  private lateinit var activity: Activity?;
+  private var activity: Activity?;
   private var eventSink: EventChannel.EventSink? = null
   private lateinit var screenShotListenManager: ScreenShotListenManager;
   var disableScreenshots: Boolean = false
@@ -67,10 +67,10 @@ public class DisableScreenshotsPlugin: FlutterPlugin, MethodCallHandler, EventCh
 
   private fun setDisableScreenshotsStatus(disable: Boolean) {
     if (disable) { // 禁用截屏
-      activity.window.setFlags(WindowManager.LayoutParams.FLAG_SECURE, WindowManager.LayoutParams.FLAG_SECURE);
+      activity?.window.setFlags(WindowManager.LayoutParams.FLAG_SECURE, WindowManager.LayoutParams.FLAG_SECURE);
       println("禁用截屏")
     } else { // 允许截屏
-      activity.window.clearFlags(WindowManager.LayoutParams.FLAG_SECURE)
+      activity?.window.clearFlags(WindowManager.LayoutParams.FLAG_SECURE)
       println("允许截屏")
     }
   }
