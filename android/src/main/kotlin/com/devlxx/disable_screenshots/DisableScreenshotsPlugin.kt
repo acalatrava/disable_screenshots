@@ -29,7 +29,7 @@ public class DisableScreenshotsPlugin: FlutterPlugin, MethodCallHandler, EventCh
   /// when the Flutter Engine is detached from the Activity
   private lateinit var channel : MethodChannel
   private lateinit var applicationContext: Context;
-  private lateinit var activity: Activity;
+  private lateinit var activity: Activity?;
   private var eventSink: EventChannel.EventSink? = null
   private lateinit var screenShotListenManager: ScreenShotListenManager;
   var disableScreenshots: Boolean = false
