@@ -22,6 +22,12 @@ public class SwiftDisableScreenshotsPlugin: NSObject {
   @objc func callScreenshots() {
     eventSink!("")
   }
+
+  @objc func callCaptureChanged() {
+    if UIScreen.main.isCaptured {
+        eventSink!("")
+    }
+  }
 }
 
 extension SwiftDisableScreenshotsPlugin: FlutterPlugin {
@@ -42,7 +48,16 @@ extension SwiftDisableScreenshotsPlugin: FlutterPlugin {
             result(FlutterMethodNotImplemented)
         }
         */
-        result(FlutterMethodNotImplemented)
+        if call.method == "checkIfRecording" {
+                if UIScreen.main.isCaptured {
+                    eventSink!("")
+                }
+            } else {
+                print("【SwiftDisableScreenshotsPlugin】disableScreenshots 收到错误参数")
+            }
+        } else {
+            result(FlutterMethodNotImplemented)
+        }
     }
 }
 
@@ -54,6 +69,12 @@ extension SwiftDisableScreenshotsPlugin: FlutterStreamHandler {
             self,
             selector: #selector(callScreenshots),
             name: UIApplication.userDidTakeScreenshotNotification,
+            object: nil)
+
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(callCaptureChanged),
+            name: UIScreen.capturedDidChangeNotification,
             object: nil)
         
         return nil

@@ -87,4 +87,13 @@ class DisableScreenshots {
       print('仅Android平台支持禁用屏幕截图');
     }
   }
+
+  Future<void> checkIfRecording() async {
+    if (Platform.isIOS) {
+      return await _methodChannel
+          .invokeMethod("checkIfRecording", {});
+    } else {
+      print('checkIfRecording - not avaliable on Android');
+    }
+  }
 }
