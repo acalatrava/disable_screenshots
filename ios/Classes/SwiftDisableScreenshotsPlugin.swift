@@ -49,12 +49,13 @@ extension SwiftDisableScreenshotsPlugin: FlutterPlugin {
         }
         */
         if call.method == "checkIfRecording" {
+            //if let arg = call.arguments as? Dictionary<String, Any>, let disable = arg["disable"] as? Bool {
                 if UIScreen.main.isCaptured {
                     eventSink!("")
                 }
-            } else {
+            /*} else {
                 print("【SwiftDisableScreenshotsPlugin】disableScreenshots 收到错误参数")
-            }
+            }*/
         } else {
             result(FlutterMethodNotImplemented)
         }
