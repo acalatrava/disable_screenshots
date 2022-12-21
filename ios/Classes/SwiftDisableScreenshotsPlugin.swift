@@ -30,34 +30,64 @@ public class SwiftDisableScreenshotsPlugin: NSObject {
   }
 }
 
+extension UIWindow {
+    struct Holder {
+        static var _mySecureTextField:UITextField = UITextField()
+    }
+    var _mySecureTextField:UITextField {
+        get {
+            return Holder._mySecureTextField
+        }
+        set(newValue) {
+            Holder._mySecureTextField = newValue
+        }
+    }
+
+  func makeSecure() {
+      let field = _mySecureTextField
+      if (field.tag == 31337) {
+          field.isSecureTextEntry = true
+          return;
+      }
+      field.isSecureTextEntry = true
+      field.tag = 31337;
+      self.addSubview(field)
+      field.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
+      field.centerXAnchor.constraint(equalTo: self.centerXAnchor).isActive = true
+      self.layer.superlayer?.addSublayer(field.layer)
+      field.layer.sublayers?.first?.addSublayer(self.layer)
+    }
+    
+    func makeInsecure() {
+        NSLog("makeInsecure %@", self.viewWithTag(31337) ?? "null");
+        let field = _mySecureTextField
+        field.isSecureTextEntry = false
+      }
+}
+
 extension SwiftDisableScreenshotsPlugin: FlutterPlugin {
     public func handle(_ call: FlutterMethodCall, result: @escaping FlutterResult) {
-        /*
-        //iOS平台无法实现禁用截屏功能
-        if call.method == "disableScreenshots" {
-            if let arg = call.arguments as? Dictionary<String, Any>, let disable = arg["disable"] as? Bool {
-                if disable {
-                    //禁用截屏
+        switch call.method {
+            case "disableScreenshots":
+                if let arg = call.arguments as? Dictionary<String, Any>, let disable = arg["disable"] as? Bool {
+                    if disable {
+                        UIApplication.shared.windows.filter {$0.isKeyWindow}.first?.makeSecure();
+                    } else {
+                        UIApplication.shared.windows.filter {$0.isKeyWindow}.first?.makeInsecure();
+                    }
                 } else {
-                    //允许截屏
+                    print("【SwiftDisableScreenshotsPlugin】disableScreenshots 收到错误参数")
                 }
-            } else {
-                print("【SwiftDisableScreenshotsPlugin】disableScreenshots 收到错误参数")
-            }
-        } else {
-            result(FlutterMethodNotImplemented)
-        }
-        */
-        if call.method == "checkIfRecording" {
-            //if let arg = call.arguments as? Dictionary<String, Any>, let disable = arg["disable"] as? Bool {
+
+            case "checkIfRecording":
                 if UIScreen.main.isCaptured {
                     eventSink!("")
                 }
-            /*} else {
-                print("【SwiftDisableScreenshotsPlugin】disableScreenshots 收到错误参数")
-            }*/
-        } else {
-            result(FlutterMethodNotImplemented)
+
+                
+            default:
+                result(FlutterMethodNotImplemented)
+            
         }
     }
 }

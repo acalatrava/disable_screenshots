@@ -80,18 +80,13 @@ class DisableScreenshots {
 
   /// 只支持安卓
   Future<void> disableScreenshots(bool disable) async {
-    if (Platform.isAndroid) {
-      return await _methodChannel
-          .invokeMethod("disableScreenshots", {"disable": disable});
-    } else {
-      print('仅Android平台支持禁用屏幕截图');
-    }
+    return await _methodChannel
+        .invokeMethod("disableScreenshots", {"disable": disable});
   }
 
   Future<void> checkIfRecording() async {
     if (Platform.isIOS) {
-      return await _methodChannel
-          .invokeMethod("checkIfRecording", {});
+      return await _methodChannel.invokeMethod("checkIfRecording", {});
     } else {
       print('checkIfRecording - not avaliable on Android');
     }
