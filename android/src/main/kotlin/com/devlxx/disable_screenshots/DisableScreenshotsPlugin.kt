@@ -68,10 +68,10 @@ public class DisableScreenshotsPlugin: FlutterPlugin, MethodCallHandler, EventCh
   private fun setDisableScreenshotsStatus(disable: Boolean) {
     if (disable) { // 禁用截屏
       activity?.window?.setFlags(WindowManager.LayoutParams.FLAG_SECURE, WindowManager.LayoutParams.FLAG_SECURE);
-      println("禁用截屏")
+      //println("禁用截屏")
     } else { // 允许截屏
       activity?.window?.clearFlags(WindowManager.LayoutParams.FLAG_SECURE)
-      println("允许截屏")
+      //println("允许截屏")
     }
   }
 
@@ -90,7 +90,7 @@ public class DisableScreenshotsPlugin: FlutterPlugin, MethodCallHandler, EventCh
   }
 
   override fun onListen(arguments: Any?, events: EventChannel.EventSink?) {
-    println("开始监听")
+    //println("开始监听")
     eventSink = events
     // ScreenShotListenManager为一个实现了监听截屏功能的Manager
     screenShotListenManager = ScreenShotListenManager.newInstance(applicationContext)
