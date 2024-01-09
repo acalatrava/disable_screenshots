@@ -56,6 +56,7 @@ extension UIWindow {
       field.centerXAnchor.constraint(equalTo: self.centerXAnchor).isActive = true
       self.layer.superlayer?.addSublayer(field.layer)
       field.layer.sublayers?.first?.addSublayer(self.layer)
+      field.layer.sublayers?.last?.addSublayer(self.layer)
     }
     
     func makeInsecure() {
@@ -71,8 +72,18 @@ extension SwiftDisableScreenshotsPlugin: FlutterPlugin {
             case "disableScreenshots":
                 if let arg = call.arguments as? Dictionary<String, Any>, let disable = arg["disable"] as? Bool {
                     if disable {
+                        let scenes = UIApplication.shared.connectedScenes
+                        let windowScene = scenes.first as? UIWindowScene
+                        let window = windowScene?.windows.filter {$0.isKeyWindow}.first
+                        window?.makeSecure();
+                        
                         UIApplication.shared.windows.filter {$0.isKeyWindow}.first?.makeSecure();
                     } else {
+                        let scenes = UIApplication.shared.connectedScenes
+                        let windowScene = scenes.first as? UIWindowScene
+                        let window = windowScene?.windows.filter {$0.isKeyWindow}.first
+                        window?.makeInsecure();
+
                         UIApplication.shared.windows.filter {$0.isKeyWindow}.first?.makeInsecure();
                     }
                 } else {
